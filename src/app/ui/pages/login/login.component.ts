@@ -30,7 +30,7 @@ export class LoginComponent {
       const { username, password } = this.loginForm.formGroup.value;
       console.log('Login submitted:', { username, password });
       // Add your login logic here
-      this.router.navigate(['/workshop']);
+      this.router.navigate(['/workshop/dashboard']);
     } else {
       this.loginForm.markAllAsTouched();
     }

@@ -1,0 +1,45 @@
+<nav class="side-nav">
+  <ul>
+    @for (level1 of menu; track level1.label) {
+      <li>
+        <div class="menu-item" (click)="toggle(level1)">
+          {{ level1.label }}
+          @if (level1.children) {
+            <span>&#9654;</span>
+          }
+        </div>
+        @if (level1.expanded) {
+          <ul>
+            @for (level2 of level1.children; track level2.label) {
+              <li>
+                <div class="menu-item" (click)="toggle(level2); $event.stopPropagation()">
+                  {{ level2.label }}
+                  @if (level2.children) {
+                    <span>&#9654;</span>
+                  }
+                </div>
+                @if (level2.expanded) {
+                  <ul>
+                    @for (level3 of level2.children; track level3.label) {
+                      <li>
+                        @if (level3.label === 'Register') {
+                          <a routerLink="/workshop/register-vehicle" class="menu-item level3">
+                            {{ level3.label }}
+                          </a>
+                        } @else {
+                          <div class="menu-item level3">
+                            {{ level3.label }}
+                          </div>
+                        }
+                      </li>
+                    }
+                  </ul>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </li>
+    }
+  </ul>
+</nav> 
