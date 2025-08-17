@@ -8,7 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'emec-login',
   standalone: true,
   imports: [
     CommonModule,
