@@ -1,0 +1,33 @@
+<div class="login-container">
+    <mat-card class="login-card">
+      <div class="image-container">
+        <img src="assets/images/login.jpg" alt="eMec Logo" />
+      </div>
+  
+      <h2 class="title">Welcome to eMec</h2>
+  
+      <form [formGroup]="loginForm.formGroup" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" class="full-width" type="submit">
+          Login
+        </button>
+  
+        <button mat-button color="accent" class="forgot-button" (click)="onForgotPassword()">
+          Forgot Password?
+        </button>
+      </form>
+    </mat-card>
+  
+    <footer class="footer">
+      &copy; {{ currentYear }} eMec. All rights reserved.
+    </footer>
+  </div>
