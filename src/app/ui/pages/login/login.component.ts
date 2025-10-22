@@ -11,8 +11,10 @@ import { Router } from '@angular/router';
 import { API_ACTIONS } from '../../../constants/api-actions';
 import { catchError, of, take, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { snackBarError, snackBarInfo } from '../../../core/utils/snack-bar.util';
-
+import {
+  snackBarError,
+  snackBarInfo,
+} from '../../../core/utils/snack-bar.util';
 
 @Component({
   selector: 'emec-login',
@@ -32,7 +34,7 @@ export class LoginComponent {
   currentYear: number = new Date().getFullYear();
   router = inject(Router);
   authService = inject(AuthService);
-    matSnackBar = inject(MatSnackBar);
+  matSnackBar = inject(MatSnackBar);
 
   onSubmit(): void {
     if (this.loginForm.formGroup.valid) {
@@ -44,39 +46,54 @@ export class LoginComponent {
           password: password,
         },
       };
-      // this.authService.auth(request).subscribe({
-      //   next: (response) => {
-      //     // Handle successful login (e.g., store token, redirect)
-      //     this.router.navigate(['/workshop/dashboard']);
-      //   },
-      //   error: (err) => {
-      //     // Handle error (e.g., show error message)
-      //     alert('Login failed. Please check your credentials.');
-      //   }
-      // });
+      
 
-      this.authService.auth(request).pipe(
-        take(1),
-        tap((authResponse) => {
-          if (authResponse.isSuccess) {
-            if (!authResponse.result.accessToken || !authResponse.result.refreshToken) {
-              snackBarInfo(this.matSnackBar, 'Login failed. Missing authentication tokens.');
-              return;
+      this.authService
+        .auth(request)
+        .pipe(
+          take(1),
+          tap((authResponse) => {
+            if (authResponse.isSuccess) {
+              if (
+                !authResponse.result ||
+                !authResponse.result.accessToken ||
+                !authResponse.result.refreshToken
+              ) {
+                snackBarInfo(
+                  this.matSnackBar,
+                  'Login failed. Missing authentication tokens.'
+                );
+                return;
+              }
+              // Store tokens and username in localStorage
+              localStorage.setItem(
+                'access_token',
+                authResponse.result.accessToken
+              );
+              localStorage.setItem(
+                'refresh_token',
+                authResponse.result.refreshToken
+              );
+              localStorage.setItem('username', username);
+              this.router.navigate(['/workshop/dashboard']);
+            } else {
+              snackBarError(
+                this.matSnackBar,
+                authResponse.error && authResponse.error.message
+                  ? authResponse.error.message
+                  : 'Login failed. Please check your credentials.'
+              );
             }
-            // Store tokens and username in localStorage
-            localStorage.setItem('access_token', authResponse.result.accessToken);
-            localStorage.setItem('refresh_token', authResponse.result.refreshToken);
-            localStorage.setItem('username', username);
-            this.router.navigate(['/workshop/dashboard']);
-          } else {
-            snackBarError(this.matSnackBar, authResponse.error.message);
-          }
-        }),
-        catchError((error) => {
-          snackBarError(this.matSnackBar, 'Unexpected error occurred. Please try again later.');
-          return of(null);
-        })
-      ).subscribe();
+          }),
+          catchError((error) => {
+            snackBarError(
+              this.matSnackBar,
+              'Unexpected error occurred. Please try again later.'
+            );
+            return of(null);
+          })
+        )
+        .subscribe();
     } else {
       this.loginForm.markAllAsTouched();
     }

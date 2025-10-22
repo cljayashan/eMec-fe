@@ -3,6 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
+// Define the expected response structure for testVehicle
+export interface TestVehicleResponse {
+  success?: boolean;
+  message?: string;
+  data?: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +18,7 @@ export class VehicleService {
 
   constructor(private http: HttpClient) {}
 
-  testVehicle(): Observable<any> {
-    return this.http.post(this.baseUrl, {});
+  testVehicle(): Observable<TestVehicleResponse> {
+    return this.http.post<TestVehicleResponse>(this.baseUrl, {});
   }
 }
