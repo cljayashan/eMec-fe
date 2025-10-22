@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthRequest } from '../requests/auth/auth-requests';
+import { AuthResponse } from '../responses/auth-response';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -12,11 +13,11 @@ export class AuthService {
 
     constructor(private http: HttpClient) {}
 
-    auth(request: AuthRequest): Observable<any> {
-        return this.http.post(`${this.baseUrl}/auth/auth`, request);
+    auth(request: AuthRequest): Observable<AuthResponse> {
+        return this.http.post<AuthResponse>(`${this.baseUrl}/auth/auth`, request);
     }
 
-    refreshToken(request: AuthRequest): Observable<any> {
-        return this.http.post(`${this.baseUrl}/auth/refresh-token`, request);
+    refreshToken(request: AuthRequest): Observable<AuthResponse> {
+        return this.http.post<AuthResponse>(`${this.baseUrl}/auth/refresh-token`, request);
     }
 }

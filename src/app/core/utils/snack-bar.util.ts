@@ -6,7 +6,7 @@ export function snackBarSuccess(
   duration: number = 3000
 ) {
   return snackBar.open(message, 'Close', {
-    duration,panelClass: ['snackbar-success'],
+    duration, panelClass: ['snackbar-success'],
   });
 }
 
@@ -16,7 +16,7 @@ export function snackBarError(
   duration: number = 3000
 ) {
   return snackBar.open(message, 'Close', {
-    duration,panelClass: ['snackbar-error'],
+    duration, panelClass: ['snackbar-error'],
   });
 }
 
@@ -25,7 +25,7 @@ export function snackBarInfo(
   message: string,
   duration: number = 3000
 ) {
-return snackBar.open(message, 'Close',  {
+  return snackBar.open(message, 'Close', {
     duration,
     panelClass: ['snackbar-info'],
 });

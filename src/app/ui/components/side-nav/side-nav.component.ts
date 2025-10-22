@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+
+interface MenuItem {
+  label: string;
+  expanded?: boolean;
+  children?: MenuItem[];
+}
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -10,7 +16,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./side-nav.component.scss']
 })
 export class SideNavComponent {
-  menu = [
+  menu: MenuItem[] = [
     {
       label: 'Workshop',
       expanded: false,
@@ -47,7 +53,7 @@ export class SideNavComponent {
     }
   ];
 
-  toggle(item: any) {
+  toggle(item: MenuItem) {
     item.expanded = !item.expanded;
   }
 } 
