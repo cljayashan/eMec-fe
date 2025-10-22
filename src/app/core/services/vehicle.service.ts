@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VehicleService {
-  private apiUrl = 'https://localhost:5000/api/vehicle/test';
+  private baseUrl = `${environment.baseUrl}/vehicle/test`;
 
   constructor(private http: HttpClient) {}
 
   testVehicle(): Observable<any> {
-    return this.http.post(this.apiUrl, {});
+    return this.http.post(this.baseUrl, {});
   }
 }
