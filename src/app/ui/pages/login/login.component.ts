@@ -63,9 +63,10 @@ export class LoginComponent {
               snackBarInfo(this.matSnackBar, 'Login failed. Missing authentication tokens.');
               return;
             }
-                // Store tokens in localStorage
-                localStorage.setItem('access_token', authResponse.result.accessToken);
-                localStorage.setItem('refresh_token', authResponse.result.refreshToken);
+            // Store tokens and username in localStorage
+            localStorage.setItem('access_token', authResponse.result.accessToken);
+            localStorage.setItem('refresh_token', authResponse.result.refreshToken);
+            localStorage.setItem('username', username);
             this.router.navigate(['/workshop/dashboard']);
           } else {
             snackBarError(this.matSnackBar, authResponse.error.message);
