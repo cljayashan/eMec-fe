@@ -1,4 +1,110 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.page-title {
+    color: #0078d4;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.emec-input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    padding-bottom: 0px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+    background-color: #f5f5f5;
+
+    &:focus {
+        outline: none;
+        border-color: #0078d4;
+        box-shadow: 0 0 5px rgba(0, 120, 212, 0.5);
+    }
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 140px;
+}
+
+
+/* Snackbar Success Styles */
+.snackbar-success {
+//   // For Angular Material v15+ (MDC-based)
+//   .mat-mdc-snack-bar-container {
+//     background-color: #ffffff !important;
+//     color: white !important;
+//   }
+  
+  .mdc-snackbar__surface {
+    background-color: #4375b6 !important;
+    color: white !important;
+  }
+  
+//   // For older Angular Material versions
+//   .mat-snack-bar-container {
+//     background-color: #4caf50 !important;
+//     color: white !important;
+//   }
+}
+
+/* Snackbar Error Styles */
+.snackbar-error {
+//   // For Angular Material v15+ (MDC-based)
+//   .mat-mdc-snack-bar-container {
+//     background-color: #f44336 !important;
+//     color: white !important;
+//   }
+  
+  .mdc-snackbar__surface {
+    background-color: #f44336 !important;
+    color: white !important;
+  }
+  
+//   // For older Angular Material versions
+//   .mat-snack-bar-container {
+//     background-color: #f44336 !important;
+//     color: white !important;
+//   }
+}
+
+.snackbar-info {
+    .mdc-snackbar__surface {
+        background-color: #3bb60b !important;
+        color: white !important;
+        border-radius: 25px;
+    }
+}
+// /* Alternative approach - Global snackbar styling */
+// .mat-mdc-snack-bar-container.snackbar-success {
+//   background-color: #4caf50 !important;
+//   color: white !important;
+// }
+
+// .mat-mdc-snack-bar-container.snackbar-error {
+//   background-color: #f44336 !important;
+//   color: white !important;
+// }
