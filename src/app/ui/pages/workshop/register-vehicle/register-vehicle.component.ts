@@ -14,7 +14,7 @@ import { createRegisterVehiclePayload } from '../../../../core/requests/workshop
 import { VehicleService } from '../../../../core/services/vehicle.service';
 import { firstValueFrom } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { MatOption } from '@angular/material/autocomplete';
+import { MatOption } from '@angular/material/core';
 import { RegisterVehicleForm } from './register-vehicle.form';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -147,16 +147,6 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
       // You can use response here if needed
     } catch (error) {
       // Error already logged in catchError
-    }
-  }
-
-  setYear(event: any, picker: any) {
-    if (event && event.getFullYear) {
-      const yomControl = this.registerVehicleFormGroup.get('yom');
-      yomControl?.setValue(event.getFullYear());
-      yomControl?.markAsTouched();
-      yomControl?.updateValueAndValidity();
-      picker.close();
     }
   }
 }

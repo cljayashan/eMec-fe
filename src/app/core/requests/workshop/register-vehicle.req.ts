@@ -20,8 +20,6 @@ export interface RegisterVehicleRequest {
 }
 
 export function createRegisterVehiclePayload(form: any): RegisterVehicleRequest {
-
-    console.log('Form Data:', form);
   return {
     action: 'add',
     attributes: {
@@ -37,7 +35,7 @@ export function createRegisterVehiclePayload(form: any): RegisterVehicleRequest 
       remarks: form.remark,
       ownerId: form.ownerId,
       createdAt: new Date().toISOString(),
-      createdBy: 0
+      createdBy: 1, // Assuming a static user ID for now
     }
   };
 }

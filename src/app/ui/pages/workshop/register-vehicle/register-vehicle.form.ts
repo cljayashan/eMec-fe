@@ -5,14 +5,14 @@ export abstract class RegisterVehicleForm {
   prefixControl = new FormControl<string>('', Validators.required);
   numberControl = new FormControl<string>('', [
     Validators.required,
-    Validators.pattern("^\\d{4}$"),
+    Validators.pattern('^\\d{4}$'),
   ]);
   brandControl = new FormControl<string>('', Validators.required);
   modelControl = new FormControl<string>('', Validators.required);
-  versionControl = new FormControl<string| null>('');
+  versionControl = new FormControl<string | null>('');
   yomControl = new FormControl<number | null>(null);
   yorControl = new FormControl<number | null>(null);
-  remarkControl = new FormControl<string| null>('');
+  remarkControl = new FormControl<string | null>('');
   ownerIdControl = new FormControl<string>('', Validators.required);
 
   registerVehicleFormGroup = new FormGroup({
