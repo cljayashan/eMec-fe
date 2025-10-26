@@ -28,48 +28,48 @@
           <mat-option value="van">Van</mat-option>
           <mat-option value="bus">Bus</mat-option>
         </mat-select>
-        @if (registerVehicleFormGroup.get('vehicleType')?.hasError('required')) {
+        @if (registerVehicleFormGroup.get('vehicleType')?.hasError('required') && registerVehicleFormGroup.get('vehicleType')?.touched) {
           <mat-error>Vehicle Type is required.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Province</mat-label>
         <input matInput formControlName="province" />
-        @if (registerVehicleFormGroup.get('province')?.hasError('required')) {
+        @if (registerVehicleFormGroup.get('province')?.hasError('required') && registerVehicleFormGroup.get('province')?.touched) {
           <mat-error>Province is required.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Prefix</mat-label>
         <input matInput formControlName="prefix" />
-        @if (registerVehicleFormGroup.get('prefix')?.hasError('required')) {
+        @if (registerVehicleFormGroup.get('prefix')?.hasError('required') && registerVehicleFormGroup.get('prefix')?.touched) {
           <mat-error>Prefix is required.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Number</mat-label>
         <input matInput formControlName="number" />
-        @if (registerVehicleFormGroup.get('number')?.hasError('required')) {
+        @if (registerVehicleFormGroup.get('number')?.hasError('required') && registerVehicleFormGroup.get('number')?.touched) {
           <mat-error>Number is required.</mat-error>
         }
-        @if (registerVehicleFormGroup.get('number')?.hasError('pattern')) {
+        @if (registerVehicleFormGroup.get('number')?.hasError('pattern') && registerVehicleFormGroup.get('number')?.touched) {
           <mat-error>Number must be exactly 4 digits.</mat-error>
         }
-        @if (registerVehicleFormGroup.get('number')?.hasError('minlength') || registerVehicleFormGroup.get('number')?.hasError('maxlength')) {
+        @if ((registerVehicleFormGroup.get('number')?.hasError('minlength') || registerVehicleFormGroup.get('number')?.hasError('maxlength')) && registerVehicleFormGroup.get('number')?.touched) {
           <mat-error>Number must be 4 digits.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Brand</mat-label>
         <input matInput formControlName="brand" />
-        @if (registerVehicleFormGroup.get('brand')?.hasError('required')) {
+        @if (registerVehicleFormGroup.get('brand')?.hasError('required') && registerVehicleFormGroup.get('brand')?.touched) {
           <mat-error>Brand is required.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Model</mat-label>
         <input matInput formControlName="model" />
-        @if (registerVehicleFormGroup.get('model')?.hasError('required')) {
+        @if (registerVehicleFormGroup.get('model')?.hasError('required') && registerVehicleFormGroup.get('model')?.touched) {
           <mat-error>Model is required.</mat-error>
         }
       </mat-form-field>

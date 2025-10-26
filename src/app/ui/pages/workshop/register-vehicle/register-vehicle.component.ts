@@ -99,6 +99,7 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
       );
       if (response && response.isSuccess) {
         snackBarSuccess(this.matSnackBar, 'Vehicle registered successfully.');
+        this.resetForm();
       } else {
         snackBarError(this.matSnackBar, response.error?.message);
       }
@@ -120,6 +121,18 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
       owner.value.toLowerCase().includes(filterValue)
     );
   }
+
+  resetForm() {
+    Object.keys(this.registerVehicleFormGroup.controls).forEach(key => {
+      const control = this.registerVehicleFormGroup.get(key);
+      control?.reset();
+      control?.setErrors(null);
+      control?.markAsUntouched();
+      control?.markAsPristine();
+    });
+    this.filteredOwnerNames = this.ownerNames;
+  }
+
   async callTestApi(): Promise<void> {
     try {
       const response = await firstValueFrom(
