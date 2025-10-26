@@ -1,3 +1,80 @@
-<button (click)="callTestApi()">Test Vehicle API</button>
-<p>Test Vehicle API!</p>
+<!-- <button (click)="callTestApi()">Test Vehicle API</button>
+<p>Test Vehicle API!</p> -->
 
+<div class="register-vehicle-form">
+  <mat-card>
+    <p class="card-header">Register Vehicle</p>
+    <form [formGroup]="vehicleForm">
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Vehicle Owner</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="vehicleOwnerControl"
+          [matAutocomplete]="autoOwner"
+        />
+        <mat-autocomplete #autoOwner="matAutocomplete">
+          <mat-option *ngFor="let owner of filteredOwnerNames" [value]="owner">
+            {{ owner }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Vehicle Type</mat-label>
+        <mat-select formControlName="vehicleType">
+          <mat-option value="car">Car</mat-option>
+          <mat-option value="van">Van</mat-option>
+          <mat-option value="bus">Bus</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Province</mat-label>
+        <input matInput formControlName="province" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Prefix</mat-label>
+        <input matInput formControlName="prefix" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Number</mat-label>
+        <input matInput formControlName="number" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Brand</mat-label>
+        <input matInput formControlName="brand" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Model</mat-label>
+        <input matInput formControlName="model" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Version</mat-label>
+        <input matInput formControlName="version" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Year of Manufacture (YoM)</mat-label>
+        <mat-select formControlName="yom">
+          <mat-option *ngFor="let year of years" [value]="year">{{
+            year
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Year of Registration (YoR)</mat-label>
+        <mat-select formControlName="yor">
+          <mat-option *ngFor="let year of years" [value]="year">{{
+            year
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="inputs">
+        <mat-label>Remark</mat-label>
+        <textarea matInput formControlName="remark" rows="3"></textarea>
+      </mat-form-field>
+      <div class="button-row">
+        <button mat-flat-button color="accent">Cancel</button>
+        <button mat-flat-button color="accent">Submit</button>
+      </div>
+    </form>
+  </mat-card>
+</div>
