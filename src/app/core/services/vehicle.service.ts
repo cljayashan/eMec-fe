@@ -14,11 +14,16 @@ export interface TestVehicleResponse {
   providedIn: 'root'
 })
 export class VehicleService {
-  private baseUrl = `${environment.baseUrl}/vehicle/test`;
+  private testUrl = `${environment.baseUrl}/vehicle/test`;
+  private registerUrl = `${environment.baseUrl}/vehicle/register`;
 
   constructor(private http: HttpClient) {}
 
   testVehicle(): Observable<TestVehicleResponse> {
-    return this.http.post<TestVehicleResponse>(this.baseUrl, {});
+    return this.http.post<TestVehicleResponse>(this.testUrl, {});
+  }
+
+  registerVehicle(payload: any): Observable<any> {
+    return this.http.post<any>(this.registerUrl, payload);
   }
 }
