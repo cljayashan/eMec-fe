@@ -1,0 +1,61 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+mat-card {
+    margin-block: 24px;
+    padding-inline: 30px;
+    padding-block: 24px;
+    margin-top: 0px;
+}
+
+.inputs {
+    width: 100%;
+}
+
+.card-header {
+    font-weight: 700;
+    padding-bottom: 12px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 0px;
+}
+
+// Make text inputs smaller in height
+.inputs.mat-form-field {
+    height: 36px;
+}
+
+.inputs .mat-input-element {
+    height: 28px;
+    font-size: 0.95rem;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.button {
+    margin-top: 12px;
+    width: 20%;
+}
+
+// Force smaller height for Angular Material text fields
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    min-height: 36px;
+    height: 36px;
+}
+
+::ng-deep .mat-input-element {
+    height: 28px !important;
+    font-size: 0.95rem;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
