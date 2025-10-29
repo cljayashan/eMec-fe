@@ -12,6 +12,7 @@
           matInput
           [formControl]="ownerIdControl"
           [matAutocomplete]="autoOwner"
+          (input)="loadCustomers(ownerIdControl.value || '')"
         />
   <mat-autocomplete #autoOwner="matAutocomplete" [displayWith]="displayOwner">
           @for (owner of filteredOwnerNames; track owner.key) {
