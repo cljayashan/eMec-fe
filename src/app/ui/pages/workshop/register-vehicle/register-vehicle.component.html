@@ -14,11 +14,14 @@
           [matAutocomplete]="autoOwner"
           (input)="loadCustomers(ownerIdControl.value || '')"
         />
-  <mat-autocomplete #autoOwner="matAutocomplete" [displayWith]="displayOwner">
+        <mat-autocomplete
+          #autoOwner="matAutocomplete"
+          [displayWith]="displayOwner"
+        >
           @for (owner of filteredOwnerNames; track owner.key) {
-            <mat-option [value]="owner.key">
-              {{ owner.value }}
-            </mat-option>
+          <mat-option [value]="owner.key">
+            {{ owner.value }}
+          </mat-option>
           }
         </mat-autocomplete>
       </mat-form-field>
@@ -29,49 +32,56 @@
           <mat-option value="van">Van</mat-option>
           <mat-option value="bus">Bus</mat-option>
         </mat-select>
-        @if (registerVehicleFormGroup.get('vehicleType')?.hasError('required') && registerVehicleFormGroup.get('vehicleType')?.touched) {
-          <mat-error>Vehicle Type is required.</mat-error>
+        @if (registerVehicleFormGroup.get('vehicleType')?.hasError('required')
+        && registerVehicleFormGroup.get('vehicleType')?.touched) {
+        <mat-error>Vehicle Type is required.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Province</mat-label>
         <input matInput formControlName="province" />
-        @if (registerVehicleFormGroup.get('province')?.hasError('required') && registerVehicleFormGroup.get('province')?.touched) {
-          <mat-error>Province is required.</mat-error>
+        @if (registerVehicleFormGroup.get('province')?.hasError('required') &&
+        registerVehicleFormGroup.get('province')?.touched) {
+        <mat-error>Province is required.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Prefix</mat-label>
         <input matInput formControlName="prefix" />
-        @if (registerVehicleFormGroup.get('prefix')?.hasError('required') && registerVehicleFormGroup.get('prefix')?.touched) {
-          <mat-error>Prefix is required.</mat-error>
+        @if (registerVehicleFormGroup.get('prefix')?.hasError('required') &&
+        registerVehicleFormGroup.get('prefix')?.touched) {
+        <mat-error>Prefix is required.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Number</mat-label>
         <input matInput formControlName="number" />
-        @if (registerVehicleFormGroup.get('number')?.hasError('required') && registerVehicleFormGroup.get('number')?.touched) {
-          <mat-error>Number is required.</mat-error>
-        }
-        @if (registerVehicleFormGroup.get('number')?.hasError('pattern') && registerVehicleFormGroup.get('number')?.touched) {
-          <mat-error>Number must be exactly 4 digits.</mat-error>
-        }
-        @if ((registerVehicleFormGroup.get('number')?.hasError('minlength') || registerVehicleFormGroup.get('number')?.hasError('maxlength')) && registerVehicleFormGroup.get('number')?.touched) {
-          <mat-error>Number must be 4 digits.</mat-error>
+        @if (registerVehicleFormGroup.get('number')?.hasError('required') &&
+        registerVehicleFormGroup.get('number')?.touched) {
+        <mat-error>Number is required.</mat-error>
+        } @if (registerVehicleFormGroup.get('number')?.hasError('pattern') &&
+        registerVehicleFormGroup.get('number')?.touched) {
+        <mat-error>Number must be exactly 4 digits.</mat-error>
+        } @if ((registerVehicleFormGroup.get('number')?.hasError('minlength') ||
+        registerVehicleFormGroup.get('number')?.hasError('maxlength')) &&
+        registerVehicleFormGroup.get('number')?.touched) {
+        <mat-error>Number must be 4 digits.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Brand</mat-label>
         <input matInput formControlName="brand" />
-        @if (registerVehicleFormGroup.get('brand')?.hasError('required') && registerVehicleFormGroup.get('brand')?.touched) {
-          <mat-error>Brand is required.</mat-error>
+        @if (registerVehicleFormGroup.get('brand')?.hasError('required') &&
+        registerVehicleFormGroup.get('brand')?.touched) {
+        <mat-error>Brand is required.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Model</mat-label>
         <input matInput formControlName="model" />
-        @if (registerVehicleFormGroup.get('model')?.hasError('required') && registerVehicleFormGroup.get('model')?.touched) {
-          <mat-error>Model is required.</mat-error>
+        @if (registerVehicleFormGroup.get('model')?.hasError('required') &&
+        registerVehicleFormGroup.get('model')?.touched) {
+        <mat-error>Model is required.</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
@@ -81,13 +91,17 @@
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Year of Manufacture (YoM)</mat-label>
         <mat-select formControlName="yom">
-          <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+          <mat-option *ngFor="let year of years" [value]="year">{{
+            year
+          }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
         <mat-label>Year of Registration (YoR)</mat-label>
         <mat-select formControlName="yor">
-          <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+          <mat-option *ngFor="let year of years" [value]="year">{{
+            year
+          }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline" class="inputs">
@@ -95,7 +109,9 @@
         <textarea matInput formControlName="remark" rows="3"></textarea>
       </mat-form-field>
       <div class="button-row">
-        <button mat-flat-button color="accent" (click)="submitVehicle()">Submit</button>
+        <button mat-flat-button color="accent" (click)="submitVehicle()">
+          Submit
+        </button>
         <button mat-flat-button color="accent">Cancel</button>
       </div>
     </form>
