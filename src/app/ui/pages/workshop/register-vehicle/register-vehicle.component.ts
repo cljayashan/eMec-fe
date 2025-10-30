@@ -13,10 +13,7 @@ import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { createRegisterVehiclePayload } from '../../../../core/requests/workshop/register-vehicle.req';
 import { VehicleService } from '../../../../core/services/vehicle.service';
 import { CustomerService } from '../../../../core/services/customer.service';
-import {
-  SearchCustomerResponse,
-  SearchCustomerResult,
-} from '../../../../core/responses/common/search-customer.res';
+import { SearchCustomerResponse } from '../../../../core/responses/common/search-customer.res';
 import { firstValueFrom } from 'rxjs';
 import { tap, catchError, take, debounce, debounceTime } from 'rxjs/operators';
 import { MatOption } from '@angular/material/core';
@@ -28,6 +25,13 @@ import {
   snackBarSuccess,
 } from '../../../../core/utils/snack-bar.util';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { mapSearchCustomerResponseToOwnerNameVm } from '../../../../core/mappers/response-mappers/search-customer-response.mapper';
+import { IOwnerNameListDropdownVm } from '../../../../core/vm/common/owner-name-list-dropdown.vm';
+import { SearchCustomerNamesAttributes } from '../../../../core/requests/common/search-customer-names.req';
+import { mapToSearchCustomerNamesRequest } from '../../../../core/mappers/search-customer-names-request.mapper';
+import { API_ACTIONS } from '../../../../constants/api-actions';
+import { RequestWrapper } from '../../../../core/requests/request-wrapper.req';
+import { ResponseWrapper } from '../../../../core/responses/response-wrapper.res';
 
 @Component({
   selector: 'app-register-vehicle',
@@ -58,7 +62,7 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
   ) as CustomerService;
 
   ownerNames: { key: string; value: string }[] = [];
-  
+
   filteredOwnerNames: { key: string; value: string }[] = [];
 
   constructor() {
@@ -78,19 +82,31 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
     return found ? found.value : '';
   };
 
-  
+  loadCustomers(searchKey: string = ''): void {
+    console.log('Loading customers with search key:', searchKey);
 
-  loadCustomers(searchKey: string = '') : void {
+    const attributes = { FName: searchKey };
+    const wrappedRequest = mapToSearchCustomerNamesRequest(
+      attributes,
+      API_ACTIONS.LIST,
+      ['dropdowndata']
+    );
+
+    console.log('Request Wrapper:', wrappedRequest);
+
     this.customerService
-      .searchCustomers(searchKey)
+      .searchCustomers(wrappedRequest)
       .pipe(
         take(1),
         tap((response: SearchCustomerResponse) => {
+          console.log('Customer search response:', response);
           if (response && response.isSuccess && response.result) {
-            this.ownerNames = response.result.map(
-              (customer: SearchCustomerResult) => ({
-                key: customer.id,
-                value: customer.name,
+            const ownerDropdownList = mapSearchCustomerResponseToOwnerNameVm(response.result);
+            console.log('Owner Dropdown List:', ownerDropdownList);
+            this.ownerNames = ownerDropdownList.map(
+              (owner: IOwnerNameListDropdownVm) => ({
+                key: owner.id,
+                value: `${owner.FName} ${owner.LName}`.trim(),
               })
             );
             this.filteredOwnerNames = this.ownerNames;
@@ -101,7 +117,7 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
             );
           }
         }),
-        catchError((err) => {
+        catchError((err: any) => {
           snackBarError(
             this.matSnackBar,
             'An error occurred while loading customers.'

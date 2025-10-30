@@ -1,10 +1,10 @@
 
 //This is the wrapper base response class for all API
-export class ResponseBase<T = any> {
+export class ResponseWrapper<T = any> {
 	isSuccess!: boolean;
 	result?: T;
 	error?: ErrorMessage;
-	constructor(init?: Partial<ResponseBase<T>>) {
+	constructor(init?: Partial<ResponseWrapper<T>>) {
 		Object.assign(this, init);
 	}
 }
@@ -16,7 +16,7 @@ export interface ErrorMessage {
 
 // Example inherited classes
 import { CustomerName } from '../services/customer.service';
-export class CustomerSearchResponse extends ResponseBase<CustomerName[]> {}
+export class CustomerSearchResponse extends ResponseWrapper<CustomerName[]> {}
 
 // If you have a Vehicle type, you can add:
 // import { Vehicle } from '../services/vehicle.service';
