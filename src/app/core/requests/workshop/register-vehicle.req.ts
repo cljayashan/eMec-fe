@@ -1,3 +1,5 @@
+import { API_ACTIONS } from "../../../constants/api-actions";
+
 export interface RegisterVehicleAttributes {
   id: string;
   province: string;
@@ -15,13 +17,13 @@ export interface RegisterVehicleAttributes {
 }
 
 export interface RegisterVehicleRequest {
-  action: 'add';
+  action: string;
   attributes: RegisterVehicleAttributes;
 }
 
 export function createRegisterVehiclePayload(form: any): RegisterVehicleRequest {
   return {
-    action: 'add',
+    action: API_ACTIONS.ADD,
     attributes: {
       id: form.id,
       province: form.province,

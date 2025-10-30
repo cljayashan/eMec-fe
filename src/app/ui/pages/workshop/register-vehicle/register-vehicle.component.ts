@@ -12,8 +12,13 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { createRegisterVehiclePayload } from '../../../../core/requests/workshop/register-vehicle.req';
 import { VehicleService } from '../../../../core/services/vehicle.service';
+import { CustomerService } from '../../../../core/services/customer.service';
+import {
+  SearchCustomerResponse,
+  SearchCustomerResult,
+} from '../../../../core/responses/common/search-customer.res';
 import { firstValueFrom } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, take, debounce, debounceTime } from 'rxjs/operators';
 import { MatOption } from '@angular/material/core';
 import { RegisterVehicleForm } from './register-vehicle.form';
 
@@ -40,9 +45,30 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   ],
   templateUrl: './register-vehicle.component.html',
   styleUrl: './register-vehicle.component.scss',
+  standalone: true,
 })
 export class RegisterVehicleComponent extends RegisterVehicleForm {
   matSnackBar = inject(MatSnackBar);
+  years: number[] = [];
+  private vehicleService: VehicleService = inject(
+    VehicleService
+  ) as VehicleService;
+  private customerService: CustomerService = inject(
+    CustomerService
+  ) as CustomerService;
+
+  ownerNames: { key: string; value: string }[] = [];
+  
+  filteredOwnerNames: { key: string; value: string }[] = [];
+
+  constructor() {
+    super();
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 1980; year--) {
+      this.years.push(year);
+    }
+    this.loadCustomers();
+  }
 
   displayOwner = (key: string | null) => {
     if (!key) return '';
@@ -51,32 +77,39 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
     );
     return found ? found.value : '';
   };
-  years: number[] = [];
-  private vehicleService: VehicleService = inject(
-    VehicleService
-  ) as VehicleService;
 
-  // Autocomplete data and logic
-  ownerNames: { key: string; value: string }[] = [
-    { key: '89E50A85-5C83-4354-80CE-EB7B2625CEE1', value: 'John Doe' },
-    { key: 'A1B2C3D4-E5F6-7890-1234-56789ABCDEFA', value: 'Jane Smith' },
-    { key: 'B2C3D4E5-F6A1-2345-6789-ABCDEFA12345', value: 'Michael Johnson' },
-    { key: 'C3D4E5F6-A1B2-3456-7890-ABCDEFA23456', value: 'Emily Davis' },
-    { key: 'D4E5F6A1-B2C3-4567-8901-ABCDEFA34567', value: 'Chris Lee' },
-    { key: 'E5F6A1B2-C3D4-5678-9012-ABCDEFA45678', value: 'Sarah Brown' },
-    { key: 'F6A1B2C3-D4E5-6789-0123-ABCDEFA56789', value: 'David Wilson' },
-    { key: 'A1B2C3D4-E5F6-7890-1234-ABCDEFA67890', value: 'Anna White' },
-    { key: 'B2C3D4E5-F6A1-2345-6789-ABCDEFA78901', value: 'James Miller' },
-    { key: 'C3D4E5F6-A1B2-3456-7890-ABCDEFA89012', value: 'Olivia Taylor' },
-  ];
-  filteredOwnerNames: { key: string; value: string }[] = this.ownerNames;
+  
 
-  constructor() {
-    super();
-    const currentYear = new Date().getFullYear();
-    for (let year = currentYear; year >= 1980; year--) {
-      this.years.push(year);
-    }
+  loadCustomers(searchKey: string = '') : void {
+    this.customerService
+      .searchCustomers(searchKey)
+      .pipe(
+        take(1),
+        tap((response: SearchCustomerResponse) => {
+          if (response && response.isSuccess && response.result) {
+            this.ownerNames = response.result.map(
+              (customer: SearchCustomerResult) => ({
+                key: customer.id,
+                value: customer.name,
+              })
+            );
+            this.filteredOwnerNames = this.ownerNames;
+          } else {
+            snackBarError(
+              this.matSnackBar,
+              response.error?.message || 'Failed to load customers.'
+            );
+          }
+        }),
+        catchError((err) => {
+          snackBarError(
+            this.matSnackBar,
+            'An error occurred while loading customers.'
+          );
+          throw err;
+        })
+      )
+      .subscribe();
   }
 
   async submitVehicle() {
@@ -123,30 +156,31 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
   }
 
   resetForm() {
-    Object.keys(this.registerVehicleFormGroup.controls).forEach(key => {
-      const control = this.registerVehicleFormGroup.get(key);
-      control?.reset();
-      control?.setErrors(null);
-      control?.markAsUntouched();
-      control?.markAsPristine();
+    Object.keys(this.registerVehicleFormGroup.controls).forEach((key) => {
+      const frmGroup = this.registerVehicleFormGroup.get(key);
+      frmGroup?.reset();
+      frmGroup?.setErrors(null);
+      frmGroup?.markAsUntouched();
+      frmGroup?.markAsPristine();
     });
     this.filteredOwnerNames = this.ownerNames;
   }
 
-  async callTestApi(): Promise<void> {
-    try {
-      const response = await firstValueFrom(
-        this.vehicleService.testVehicle().pipe(
-          tap((res) => console.log('API response:', res)),
-          catchError((err) => {
-            console.error('API error:', err);
-            throw err;
-          })
-        )
-      );
-      // You can use response here if needed
-    } catch (error) {
-      // Error already logged in catchError
-    }
-  }
+  //Test method to call test API
+  // async callTestApi(): Promise<void> {
+  //   try {
+  //     const response = await firstValueFrom(
+  //       this.vehicleService.testVehicle().pipe(
+  //         tap((res) => console.log('API response:', res)),
+  //         catchError((err) => {
+  //           console.error('API error:', err);
+  //           throw err;
+  //         })
+  //       )
+  //     );
+  //     // You can use response here if needed
+  //   } catch (error) {
+  //     // Error already logged in catchError
+  //   }
+  // }
 }
