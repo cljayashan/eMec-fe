@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { createSearchCustomerPayload } from '../requests/common/search-customer-names.req';
-import { CustomerSearchResponse } from '../responses/base.res';
+import { SearchCustomerNamesAttributes } from '../requests/common/search-customer-names.req';
+import { CustomerSearchResponse } from '../responses/response-wrapper.res';
+import { RequestWrapper } from '../requests/request-wrapper.req';
 
 export interface CustomerName {
   id: string;
@@ -18,8 +19,8 @@ export class CustomerService {
 
   constructor(private http: HttpClient) {}
 
-  searchCustomers(name?: string): Observable<CustomerSearchResponse> {
-    const payload = createSearchCustomerPayload(name);
-    return this.http.post<CustomerSearchResponse>(this.searchUrl, payload);
+  searchCustomers(request?: RequestWrapper<SearchCustomerNamesAttributes>): Observable<CustomerSearchResponse> {
+    //const payload = createSearchCustomerPayload(request);
+    return this.http.post<CustomerSearchResponse>(this.searchUrl, request);
   }
 }

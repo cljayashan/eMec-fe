@@ -18,9 +18,9 @@
           #autoOwner="matAutocomplete"
           [displayWith]="displayOwner"
         >
-          @for (owner of filteredOwnerNames; track owner.key) {
-          <mat-option [value]="owner.key">
-            {{ owner.value }}
+          @for (owner of filteredOwnerNames; track owner.id) {
+          <mat-option [value]="owner">
+            {{ owner.FulName }}
           </mat-option>
           }
         </mat-autocomplete>

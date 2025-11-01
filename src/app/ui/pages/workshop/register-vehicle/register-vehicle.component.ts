@@ -1,33 +1,31 @@
-// ...existing imports and @Component...
-// Remove duplicate class, keep only the one below
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
-import { createRegisterVehiclePayload } from '../../../../core/requests/workshop/register-vehicle.req';
-import { VehicleService } from '../../../../core/services/vehicle.service';
-import { CustomerService } from '../../../../core/services/customer.service';
-import {
-  SearchCustomerResponse,
-  SearchCustomerResult,
-} from '../../../../core/responses/common/search-customer.res';
 import { firstValueFrom } from 'rxjs';
-import { tap, catchError, take, debounce, debounceTime } from 'rxjs/operators';
-import { MatOption } from '@angular/material/core';
+import { catchError, take, tap } from 'rxjs/operators';
+import { createRegisterVehiclePayload } from '../../../../core/requests/workshop/register-vehicle.req';
+import { SearchCustomerResponse } from '../../../../core/responses/common/search-customer.res';
+import { CustomerService } from '../../../../core/services/customer.service';
+import { VehicleService } from '../../../../core/services/vehicle.service';
 import { RegisterVehicleForm } from './register-vehicle.form';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { API_ACTIONS } from '../../../../constants/api-actions';
+import { mapSearchCustomerResponseToOwnerNameVm } from '../../../../core/mappers/response-mappers/search-customer-response.mapper';
+import { mapToSearchCustomerNamesRequest } from '../../../../core/mappers/search-customer-names-request.mapper';
 import {
   snackBarError,
   snackBarSuccess,
 } from '../../../../core/utils/snack-bar.util';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { IOwnerNameListDropdownVm } from '../../../../core/vm/common/owner-name-list-dropdown.vm';
 
 @Component({
   selector: 'app-register-vehicle',
@@ -57,43 +55,46 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
     CustomerService
   ) as CustomerService;
 
-  ownerNames: { key: string; value: string }[] = [];
-  
-  filteredOwnerNames: { key: string; value: string }[] = [];
+  ownerNames: IOwnerNameListDropdownVm[] = [];
+
+  filteredOwnerNames: IOwnerNameListDropdownVm[] = [];
 
   constructor() {
     super();
+    this.setCurrentYear();
+    this.loadCustomers();
+  }
+
+  setCurrentYear() {
     const currentYear = new Date().getFullYear();
     for (let year = currentYear; year >= 1980; year--) {
       this.years.push(year);
     }
-    this.loadCustomers();
   }
 
-  displayOwner = (key: string | null) => {
-    if (!key) return '';
-    const found = this.ownerNames.find(
-      (owner: { key: string; value: string }) => owner.key === key
-    );
-    return found ? found.value : '';
+  displayOwner = (owner: IOwnerNameListDropdownVm | null) => {
+    if (!owner) return '';
+    return owner.FulName || '';
   };
 
-  
+  async loadCustomers(searchKey: string = ''): Promise<void> {
+    const attributes = { FName: searchKey };
+    const wrappedRequest = mapToSearchCustomerNamesRequest(
+      attributes,
+      API_ACTIONS.LIST,
+      ['dropdowndata']
+    );
 
-  loadCustomers(searchKey: string = '') : void {
-    this.customerService
-      .searchCustomers(searchKey)
+    await this.customerService
+      .searchCustomers(wrappedRequest)
       .pipe(
         take(1),
         tap((response: SearchCustomerResponse) => {
           if (response && response.isSuccess && response.result) {
-            this.ownerNames = response.result.map(
-              (customer: SearchCustomerResult) => ({
-                key: customer.id,
-                value: customer.name,
-              })
+            const ownerDropdownList = mapSearchCustomerResponseToOwnerNameVm(
+              response.result
             );
-            this.filteredOwnerNames = this.ownerNames;
+            this.filteredOwnerNames = ownerDropdownList;
           } else {
             snackBarError(
               this.matSnackBar,
@@ -101,7 +102,7 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
             );
           }
         }),
-        catchError((err) => {
+        catchError((err: any) => {
           snackBarError(
             this.matSnackBar,
             'An error occurred while loading customers.'
@@ -150,8 +151,9 @@ export class RegisterVehicleComponent extends RegisterVehicleForm {
       return;
     }
     const filterValue = value.toLowerCase();
-    this.filteredOwnerNames = this.ownerNames.filter((owner) =>
-      owner.value.toLowerCase().includes(filterValue)
+    this.filteredOwnerNames = this.ownerNames.filter(
+      (owner: IOwnerNameListDropdownVm) =>
+        owner.FulName?.toLowerCase().includes(filterValue)
     );
   }
 
