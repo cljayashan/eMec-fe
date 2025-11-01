@@ -1,5 +1,4 @@
-export class IOwnerNameListDropdownVm {
-    id: string = '';
-    FName: string = '';
-    LName: string = '';
+export interface IOwnerNameListDropdownVm {
+    id: string ;
+    FulName?: string;
 }
